@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Ad Size Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Roboto font to the body */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Base styles for ad containers */
+        .ad-container {
+            border: 1px dashed #ccc; /* Simulate an ad slot boundary */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Hide parts of the image exceeding the container */
+            background-color: white;
+            margin: 1rem auto; /* Center and add space, using rem for better scaling */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* Needed for absolute positioning of placeholder */
+            border-radius: 0.5rem; /* Rounded corners */
+        }
+
+        .ad-container img {
+            display: block;
+            max-width: 100%; /* Ensure image fits within the container width */
+            max-height: 100%; /* Ensure image fits within the container height */
+            width: auto; /* Maintain aspect ratio */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .placeholder-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            text-align: center;
+            pointer-events: none; /* Allow clicks to pass through to the image */
+            padding: 0.5rem; /* Add padding to placeholder text */
+        }
+
+        /* Ensure body takes at least full screen height for centering */
+        body {
+            min-height: 100vh;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .ad-container {
+                margin: 1rem auto; /* Adjust margin for smaller screens */
+            }
+            .placeholder-text {
+                font-size: 0.8rem; /* Slightly smaller font on mobile */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center py-8 px-4">
+
+    <h1 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">Preview Your Display Ad in Different Sizes</h1>
+
+    <div class="w-full max-w-md mb-6">
+        <label class="block text-gray-700 text-sm font-semibold mb-2" for="adImage">
+            Upload your ad image:
+        </label>
+        <input type="file" id="adImage" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+    </div>
+
+     <div class="w-full max-w-md mb-8">
+        <label class="block text-gray-700 text-sm font-semibold mb-2" for="adSize">
+            Select ad size:
+        </label>
+        <select id="adSize" class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            <option value="300x250">300x250 Medium Rectangle</option>
+            <option value="320x50">320x50 Mobile Banner</option>
+            <option value="728x90">728x90 Leaderboard</option>
+            <option value="336x280">336x280 Large Rectangle</option>
+            <option value="160x600">160x600 Wide Skyscraper</option>
+            <option value="250x250">250x250 Square</option>
+        </select>
+    </div>
+
+
+    <div id="container_300x250" class="ad-container" style="width: 300px; height: 250px;">
+         <img src="#" alt="Ad Preview" class="hidden">
+         <p class="placeholder-text">300x250<br>Medium Rectangle</p>
+    </div>
+    <div id="container_320x50" class="ad-container hidden" style="width: 320px; height: 50px;">
+         <img src="#" alt="Ad Preview" class="hidden">
+         <p class="placeholder-text">320x50<br>Mobile Banner</p>
+    </div>
+    <div id="container_728x90" class="ad-container hidden" style="width: 728px; height: 90px;">
+         <img src="#" alt="Ad Preview" class="hidden">
+         <p class="placeholder-text">728x90<br>Leaderboard</p>
+    </div>
+    <div id="container_336x280" class="ad-container hidden" style="width: 336px; height: 280px;">
+         <img src="#" alt="Ad Preview" class="hidden">
+         <p class="placeholder-text">336x280<br>Large Rectangle</p>
+    </div>
+    <div id="container_160x600" class="ad-container hidden" style="width: 160px; height: 600px;">
+         <img src="#" alt="Ad Preview" class="hidden">
+         <p class="placeholder-text">160x600<br>Wide Skyscraper</p>
+    </div>
+    <div id="container_250x250" class="ad-container hidden" style="width: 250px; height: 250px;">
+         <img src="#" alt="Ad Preview" class="hidden">
+         <p class="placeholder-text">250x250<br>Square</p>
+    </div>
+
+
+    <script>
+        const fileInput = document.getElementById('adImage');
+        const sizeSelect = document.getElementById('adSize');
+        const adContainers = {
+            '300x250': document.getElementById('container_300x250'),
+            '320x50': document.getElementById('container_320x50'),
+            '728x90': document.getElementById('container_728x90'),
+            '336x280': document.getElementById('container_336x280'),
+            '160x600': document.getElementById('container_160x600'),
+            '250x250': document.getElementById('container_250x250')
+        };
+
+        let currentSize = sizeSelect.value;
+        let uploadedImageUrl = null;
+
+        // Function to update the displayed ad
+        function updateAdPreview() {
+            // Hide all containers
+            Object.values(adContainers).forEach(container => container.classList.add('hidden'));
+
+            // Show the selected container
+            const selectedContainer = adContainers[currentSize];
+            if (selectedContainer) {
+                selectedContainer.classList.remove('hidden');
+                const imgElement = selectedContainer.querySelector('img');
+                const placeholderElement = selectedContainer.querySelector('.placeholder-text');
+
+                if (uploadedImageUrl) {
+                    // If an image is uploaded, display it
+                    imgElement.src = uploadedImageUrl;
+                    imgElement.classList.remove('hidden');
+                    placeholderElement.classList.add('hidden');
+                } else {
+                    // If no image, show placeholder
+                    imgElement.src = '#'; // Clear previous image
+                    imgElement.classList.add('hidden');
+                    placeholderElement.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Event listener for file upload
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImageUrl = e.target.result;
+                    updateAdPreview(); // Update the preview with the new image
+                }
+                reader.readAsDataURL(file);
+            } else {
+                uploadedImageUrl = null;
+                updateAdPreview(); // Update the preview to show placeholder
+            }
+        });
+
+        // Event listener for size selection
+        sizeSelect.addEventListener('change', function() {
+            currentSize = this.value;
+            updateAdPreview(); // Update the preview for the new size
+        });
+
+        // Initial display
+        updateAdPreview();
+
+    </script>
+
+</body>
+</html>
