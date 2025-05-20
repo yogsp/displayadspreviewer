@@ -32,6 +32,7 @@
             max-height: 100%; /* Ensure image fits within the container height */
             width: auto; /* Maintain aspect ratio */
             height: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensures the entire image is visible within the container while maintaining aspect ratio */
         }
 
         .placeholder-text {
@@ -64,123 +65,99 @@
 </head>
 <body class="bg-gray-100 flex flex-col items-center py-8 px-4">
 
-    <h1 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">Preview Your Display Ad in Different Sizes</h1>
+    <div class="w-full max-w-screen-md bg-white rounded-2xl shadow-xl p-6 space-y-6 mb-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center">Preview Your Display Ad in Different Sizes</h1>
 
-    <div class="w-full max-w-md mb-6">
-        <label class="block text-gray-700 text-sm font-semibold mb-2" for="adImage">
-            Upload your ad image:
-        </label>
-        <input type="file" id="adImage" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+        <div>
+            <label for="adImage" class="block text-sm font-medium text-gray-700 mb-2">Upload Ad Image</label>
+            <input type="file" id="adImage" accept="image/*"
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+            <label for="adSize" class="block text-sm font-medium text-gray-700 mb-2">Select Ad Size</label>
+            <select id="adSize"
+                class="w-full px-3 py-2 border border-gray-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="300x250">300x250 Medium Rectangle</option>
+                <option value="320x50">320x50 Mobile Banner</option>
+                <option value="728x90">728x90 Leaderboard</option>
+                <option value="336x280">336x280 Large Rectangle</option>
+                <option value="160x600">160x600 Wide Skyscraper</option>
+                <option value="250x250">250x250 Square</option>
+            </select>
+        </div>
+
+        <div class="flex justify-center">
+            <div id="adPreviewWrapper" class="relative border border-dashed border-gray-300 bg-white rounded-lg shadow-md flex items-center justify-center overflow-hidden"
+                style="width: 300px; height: 250px;">
+                <img src="#" alt="Ad Preview" class="hidden" />
+                <p class="placeholder-text">300x250<br>Medium Rectangle</p>
+            </div>
+        </div>
     </div>
 
-     <div class="w-full max-w-md mb-8">
-        <label class="block text-gray-700 text-sm font-semibold mb-2" for="adSize">
-            Select ad size:
-        </label>
-        <select id="adSize" class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-            <option value="300x250">300x250 Medium Rectangle</option>
-            <option value="320x50">320x50 Mobile Banner</option>
-            <option value="728x90">728x90 Leaderboard</option>
-            <option value="336x280">336x280 Large Rectangle</option>
-            <option value="160x600">160x600 Wide Skyscraper</option>
-            <option value="250x250">250x250 Square</option>
-        </select>
-    </div>
-
-
-    <div id="container_300x250" class="ad-container" style="width: 300px; height: 250px;">
-         <img src="#" alt="Ad Preview" class="hidden">
-         <p class="placeholder-text">300x250<br>Medium Rectangle</p>
-    </div>
-    <div id="container_320x50" class="ad-container hidden" style="width: 320px; height: 50px;">
-         <img src="#" alt="Ad Preview" class="hidden">
-         <p class="placeholder-text">320x50<br>Mobile Banner</p>
-    </div>
-    <div id="container_728x90" class="ad-container hidden" style="width: 728px; height: 90px;">
-         <img src="#" alt="Ad Preview" class="hidden">
-         <p class="placeholder-text">728x90<br>Leaderboard</p>
-    </div>
-    <div id="container_336x280" class="ad-container hidden" style="width: 336px; height: 280px;">
-         <img src="#" alt="Ad Preview" class="hidden">
-         <p class="placeholder-text">336x280<br>Large Rectangle</p>
-    </div>
-    <div id="container_160x600" class="ad-container hidden" style="width: 160px; height: 600px;">
-         <img src="#" alt="Ad Preview" class="hidden">
-         <p class="placeholder-text">160x600<br>Wide Skyscraper</p>
-    </div>
-    <div id="container_250x250" class="ad-container hidden" style="width: 250px; height: 250px;">
-         <img src="#" alt="Ad Preview" class="hidden">
-         <p class="placeholder-text">250x250<br>Square</p>
-    </div>
+    <footer class="w-full max-w-screen-md flex flex-col items-center py-4 mt-8 text-gray-600 text-sm"> <img src="Logo 1_1697009170.webp" alt="Company Logo" class="h-10 mb-2"> <p>For Internal Use of Stratuscast Team</p>
+        <p>V1.1</p>
+    </footer>
 
 
     <script>
         const fileInput = document.getElementById('adImage');
         const sizeSelect = document.getElementById('adSize');
-        const adContainers = {
-            '300x250': document.getElementById('container_300x250'),
-            '320x50': document.getElementById('container_320x50'),
-            '728x90': document.getElementById('container_728x90'),
-            '336x280': document.getElementById('container_336x280'),
-            '160x600': document.getElementById('container_160x600'),
-            '250x250': document.getElementById('container_250x250')
-        };
+        const previewWrapper = document.getElementById('adPreviewWrapper');
+        const imgElement = previewWrapper.querySelector('img');
+        const placeholderElement = previewWrapper.querySelector('.placeholder-text');
 
-        let currentSize = sizeSelect.value;
         let uploadedImageUrl = null;
 
-        // Function to update the displayed ad
-        function updateAdPreview() {
-            // Hide all containers
-            Object.values(adContainers).forEach(container => container.classList.add('hidden'));
+        const sizeMap = {
+            '300x250': 'Medium Rectangle',
+            '320x50': 'Mobile Banner',
+            '728x90': 'Leaderboard',
+            '336x280': 'Large Rectangle',
+            '160x600': 'Wide Skyscraper',
+            '250x250': 'Square'
+        };
 
-            // Show the selected container
-            const selectedContainer = adContainers[currentSize];
-            if (selectedContainer) {
-                selectedContainer.classList.remove('hidden');
-                const imgElement = selectedContainer.querySelector('img');
-                const placeholderElement = selectedContainer.querySelector('.placeholder-text');
+        function updatePreview() {
+            const selectedSize = sizeSelect.value;
+            const [width, height] = selectedSize.split('x');
+            previewWrapper.style.width = `${width}px`;
+            previewWrapper.style.height = `${height}px`;
 
-                if (uploadedImageUrl) {
-                    // If an image is uploaded, display it
-                    imgElement.src = uploadedImageUrl;
-                    imgElement.classList.remove('hidden');
-                    placeholderElement.classList.add('hidden');
-                } else {
-                    // If no image, show placeholder
-                    imgElement.src = '#'; // Clear previous image
-                    imgElement.classList.add('hidden');
-                    placeholderElement.classList.remove('hidden');
-                }
+            // Update placeholder text with size and name
+            placeholderElement.innerHTML = `${selectedSize}<br>${sizeMap[selectedSize]}`;
+
+            if (uploadedImageUrl) {
+                imgElement.src = uploadedImageUrl;
+                imgElement.classList.remove('hidden');
+                placeholderElement.classList.add('hidden');
+            } else {
+                imgElement.src = '#';
+                imgElement.classList.add('hidden');
+                placeholderElement.classList.remove('hidden');
             }
         }
 
-        // Event listener for file upload
-        fileInput.addEventListener('change', function(event) {
+        fileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     uploadedImageUrl = e.target.result;
-                    updateAdPreview(); // Update the preview with the new image
-                }
+                    updatePreview();
+                };
                 reader.readAsDataURL(file);
             } else {
                 uploadedImageUrl = null;
-                updateAdPreview(); // Update the preview to show placeholder
+                updatePreview();
             }
         });
 
-        // Event listener for size selection
-        sizeSelect.addEventListener('change', function() {
-            currentSize = this.value;
-            updateAdPreview(); // Update the preview for the new size
-        });
+        sizeSelect.addEventListener('change', updatePreview);
 
-        // Initial display
-        updateAdPreview();
-
+        // Initialize preview
+        updatePreview();
     </script>
-
 </body>
 </html>
