@@ -1,162 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Ad Size Preview</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Apply Roboto font to the body */
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-
-        /* Base styles for ad containers */
-        .ad-container {
-            border: 1px dashed #ccc; /* Simulate an ad slot boundary */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden; /* Hide parts of the image exceeding the container */
-            background-color: white;
-            margin: 1rem auto; /* Center and add space, using rem for better scaling */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative; /* Needed for absolute positioning of placeholder */
-            border-radius: 0.5rem; /* Rounded corners */
-        }
-
-        .ad-container img {
-            display: block;
-            max-width: 100%; /* Ensure image fits within the container width */
-            max-height: 100%; /* Ensure image fits within the container height */
-            width: auto; /* Maintain aspect ratio */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: contain; /* Ensures the entire image is visible within the container while maintaining aspect ratio */
-        }
-
-        .placeholder-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #a0a0a0;
-            font-size: 0.9rem;
-            text-align: center;
-            pointer-events: none; /* Allow clicks to pass through to the image */
-            padding: 0.5rem; /* Add padding to placeholder text */
-        }
-
-        /* Ensure body takes at least full screen height for centering */
-        body {
-            min-height: 100vh;
-        }
-
-        /* Responsive adjustments for smaller screens */
-        @media (max-width: 768px) {
-            .ad-container {
-                margin: 1rem auto; /* Adjust margin for smaller screens */
-            }
-            .placeholder-text {
-                font-size: 0.8rem; /* Slightly smaller font on mobile */
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ad Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+    .ad-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .placeholder-text {
+      @apply text-gray-400 text-sm text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center py-8 px-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-screen-md bg-white rounded-2xl shadow-xl p-6 space-y-6">
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center">Display Ad Size Preview</h1>
 
-    <div class="w-full max-w-screen-md bg-white rounded-2xl shadow-xl p-6 space-y-6 mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center">Preview Your Display Ad in Different Sizes</h1>
-
-        <div>
-            <label for="adImage" class="block text-sm font-medium text-gray-700 mb-2">Upload Ad Image</label>
-            <input type="file" id="adImage" accept="image/*"
-                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        </div>
-
-        <div>
-            <label for="adSize" class="block text-sm font-medium text-gray-700 mb-2">Select Ad Size</label>
-            <select id="adSize"
-                class="w-full px-3 py-2 border border-gray-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="300x250">300x250 Medium Rectangle</option>
-                <option value="320x50">320x50 Mobile Banner</option>
-                <option value="728x90">728x90 Leaderboard</option>
-                <option value="336x280">336x280 Large Rectangle</option>
-                <option value="160x600">160x600 Wide Skyscraper</option>
-                <option value="250x250">250x250 Square</option>
-            </select>
-        </div>
-
-        <div class="flex justify-center">
-            <div id="adPreviewWrapper" class="relative border border-dashed border-gray-300 bg-white rounded-lg shadow-md flex items-center justify-center overflow-hidden"
-                style="width: 300px; height: 250px;">
-                <img src="#" alt="Ad Preview" class="hidden" />
-                <p class="placeholder-text">300x250<br>Medium Rectangle</p>
-            </div>
-        </div>
+    <div>
+      <label for="adImage" class="block text-sm font-medium text-gray-700 mb-2">Upload Ad Image</label>
+      <input type="file" id="adImage" accept="image/*"
+        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
-    <footer class="w-full max-w-screen-md flex justify-center items-center py-4 mt-8">
-        <img src="Logo 1_1697009170.webp" alt="Company Logo" class="h-10"> </footer>
+    <div>
+      <label for="adSize" class="block text-sm font-medium text-gray-700 mb-2">Select Ad Size</label>
+      <select id="adSize"
+        class="w-full px-3 py-2 border border-gray-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="300x250">300x250 Medium Rectangle</option>
+        <option value="320x50">320x50 Mobile Banner</option>
+        <option value="728x90">728x90 Leaderboard</option>
+        <option value="336x280">336x280 Large Rectangle</option>
+        <option value="160x600">160x600 Wide Skyscraper</option>
+        <option value="250x250">250x250 Square</option>
+      </select>
+    </div>
 
+    <div class="flex justify-center">
+      <!-- Preview Container -->
+      <div id="adPreviewWrapper" class="relative border border-dashed border-gray-300 bg-white rounded-lg shadow-md flex items-center justify-center overflow-hidden"
+        style="width: 300px; height: 250px;">
+        <img src="#" alt="Ad Preview" class="hidden" />
+        <p class="placeholder-text">300x250<br>Medium Rectangle</p>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        const fileInput = document.getElementById('adImage');
-        const sizeSelect = document.getElementById('adSize');
-        const previewWrapper = document.getElementById('adPreviewWrapper');
-        const imgElement = previewWrapper.querySelector('img');
-        const placeholderElement = previewWrapper.querySelector('.placeholder-text');
+  <script>
+    const fileInput = document.getElementById('adImage');
+    const sizeSelect = document.getElementById('adSize');
+    const previewWrapper = document.getElementById('adPreviewWrapper');
+    const imgElement = previewWrapper.querySelector('img');
+    const placeholderElement = previewWrapper.querySelector('.placeholder-text');
 
-        let uploadedImageUrl = null;
+    let uploadedImageUrl = null;
 
-        const sizeMap = {
-            '300x250': 'Medium Rectangle',
-            '320x50': 'Mobile Banner',
-            '728x90': 'Leaderboard',
-            '336x280': 'Large Rectangle',
-            '160x600': 'Wide Skyscraper',
-            '250x250': 'Square'
+    const sizeMap = {
+      '300x250': '300x250 Medium Rectangle',
+      '320x50': '320x50 Mobile Banner',
+      '728x90': '728x90 Leaderboard',
+      '336x280': '336x280 Large Rectangle',
+      '160x600': '160x600 Wide Skyscraper',
+      '250x250': '250x250 Square'
+    };
+
+    function updatePreview() {
+      const selectedSize = sizeSelect.value;
+      const [width, height] = selectedSize.split('x');
+      previewWrapper.style.width = `${width}px`;
+      previewWrapper.style.height = `${height}px`;
+
+      placeholderElement.innerHTML = `${selectedSize}<br>${sizeMap[selectedSize]}`;
+
+      if (uploadedImageUrl) {
+        imgElement.src = uploadedImageUrl;
+        imgElement.classList.remove('hidden');
+        placeholderElement.classList.add('hidden');
+      } else {
+        imgElement.src = '#';
+        imgElement.classList.add('hidden');
+        placeholderElement.classList.remove('hidden');
+      }
+    }
+
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          uploadedImageUrl = e.target.result;
+          updatePreview();
         };
-
-        function updatePreview() {
-            const selectedSize = sizeSelect.value;
-            const [width, height] = selectedSize.split('x');
-            previewWrapper.style.width = `${width}px`;
-            previewWrapper.style.height = `${height}px`;
-
-            // Update placeholder text with size and name
-            placeholderElement.innerHTML = `${selectedSize}<br>${sizeMap[selectedSize]}`;
-
-            if (uploadedImageUrl) {
-                imgElement.src = uploadedImageUrl;
-                imgElement.classList.remove('hidden');
-                placeholderElement.classList.add('hidden');
-            } else {
-                imgElement.src = '#';
-                imgElement.classList.add('hidden');
-                placeholderElement.classList.remove('hidden');
-            }
-        }
-
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    uploadedImageUrl = e.target.result;
-                    updatePreview();
-                };
-                reader.readAsDataURL(file);
-            } else {
-                uploadedImageUrl = null;
-                updatePreview();
-            }
-        });
-
-        sizeSelect.addEventListener('change', updatePreview);
-
-        // Initialize preview
+        reader.readAsDataURL(file);
+      } else {
+        uploadedImageUrl = null;
         updatePreview();
-    </script>
+      }
+    });
+
+    sizeSelect.addEventListener('change', updatePreview);
+
+    // Initialize preview
+    updatePreview();
+  </script>
 </body>
 </html>
