@@ -7,30 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Apply Roboto font to the body */
         body {
             font-family: 'Roboto', sans-serif;
-            min-height: 100vh;
         }
+
+        /* Base styles for ad containers */
         .ad-container {
-            border: 1px dashed #ccc;
+            border: 1px dashed #ccc; /* Simulate an ad slot boundary */
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow: hidden; /* Hide parts of the image exceeding the container */
             background-color: white;
-            margin: 1rem auto;
+            margin: 1rem auto; /* Center and add space, using rem for better scaling */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
-            border-radius: 0.5rem;
+            position: relative; /* Needed for absolute positioning of placeholder */
+            border-radius: 0.5rem; /* Rounded corners */
         }
+
         .ad-container img {
             display: block;
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
+            max-width: 100%; /* Ensure image fits within the container width */
+            max-height: 100%; /* Ensure image fits within the container height */
+            width: auto; /* Maintain aspect ratio */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensures the entire image is visible within the container while maintaining aspect ratio */
         }
+
         .placeholder-text {
             position: absolute;
             top: 50%;
@@ -39,26 +43,31 @@
             color: #a0a0a0;
             font-size: 0.9rem;
             text-align: center;
-            pointer-events: none;
-            padding: 0.5rem;
+            pointer-events: none; /* Allow clicks to pass through to the image */
+            padding: 0.5rem; /* Add padding to placeholder text */
         }
+
+        /* Ensure body takes at least full screen height for centering */
+        body {
+            min-height: 100vh;
+        }
+
+        /* Responsive adjustments for smaller screens */
         @media (max-width: 768px) {
             .ad-container {
-                margin: 1rem auto;
+                margin: 1rem auto; /* Adjust margin for smaller screens */
             }
             .placeholder-text {
-                font-size: 0.8rem;
+                font-size: 0.8rem; /* Slightly smaller font on mobile */
             }
         }
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center py-8 px-4">
-    <header class="w-full max-w-screen-md flex items-center space-x-3 mb-6">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABNklEQVRoge2YwQ2AMAxD8VfFUp2NWZVppkI+V7P0IQEfuMxL/N+4ACAAAAAAAAAAAY+V9E5QtIuVZWv+YkuDBIR4+SIWfA4PZRWwJgDl1GsFoCy6noHRyya8pRMOf8vhPiNOUcHkLKo/mUK0A7p5o0s9rMyuqqcNklg5GMPPPMXDghkEYQqkWRCoR1BpR1BSR6TxTf6MoZ5hW9+ZPPz4BzBTSk8yODCSF1KZD+yEqE3UGlHUFZHpJ1R6SdUeO7EylMdMEAAAAAAAAAANxH3A4xPeL/d3cAAAAASUVORK5CYII=" alt="Google Ads Logo" class="h-10">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Display Ads Previewer</h1>
-    </header>
 
     <div class="w-full max-w-screen-md bg-white rounded-2xl shadow-xl p-6 space-y-6 mb-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center">Preview Your Display Ad in Different Sizes</h1>
+
         <div>
             <label for="adImage" class="block text-sm font-medium text-gray-700 mb-2">Upload Ad Image</label>
             <input type="file" id="adImage" accept="image/*"
@@ -87,9 +96,10 @@
         </div>
     </div>
 
-    <footer class="w-full max-w-screen-md flex flex-col items-center py-4 mt-8 text-gray-600 text-sm">
+    <footer class="w-full max-w-screen-md flex flex-col items-center py-4 mt-8 text-gray-600 text-sm"> <img src="Logo 1_1697009170.webp" alt="Company Logo" class="h-10 mb-2"> 
         <p>V1.1</p>
     </footer>
+
 
     <script>
         const fileInput = document.getElementById('adImage');
@@ -115,6 +125,7 @@
             previewWrapper.style.width = `${width}px`;
             previewWrapper.style.height = `${height}px`;
 
+            // Update placeholder text with size and name
             placeholderElement.innerHTML = `${selectedSize}<br>${sizeMap[selectedSize]}`;
 
             if (uploadedImageUrl) {
@@ -145,6 +156,7 @@
 
         sizeSelect.addEventListener('change', updatePreview);
 
+        // Initialize preview
         updatePreview();
     </script>
 </body>
