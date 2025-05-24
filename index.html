@@ -69,7 +69,7 @@
 
                 <div class="flex flex-col items-start mb-4">
                     <div class="flex items-center">
-                        <h1 class="text-2xl font-bold text-gray-800">Display Ads Previewer</h1>
+                        <h1 class="text-2xl font-bold text-gray-800">Google Display Ads Previewer</h1>
                     </div>
                     <div class="w-full h-1 bg-[#4285F4] rounded-full mt-2"></div>
                 </div>
@@ -127,4 +127,44 @@
 
                 function updatePreview() {
                     const selectedSize = sizeSelect.value;
-                    const [width
+                    const [width, height] = selectedSize.split('x');
+                    previewWrapper.style.width = `${width}px`;
+                    previewWrapper.style.height = `${height}px`;
+
+                    // Update placeholder text with size and name
+                    placeholderElement.innerHTML = `<span class="math-inline">\{selectedSize\}<br\></span>{sizeMap[selectedSize]}`;
+
+                    if (uploadedImageUrl) {
+                        imgElement.src = uploadedImageUrl;
+                        imgElement.classList.remove('hidden');
+                        placeholderElement.classList.add('hidden');
+                    } else {
+                        imgElement.src = '#';
+                        imgElement.classList.add('hidden');
+                        placeholderElement.classList.remove('hidden');
+                    }
+                }
+
+                fileInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            uploadedImageUrl = e.target.result;
+                            updatePreview();
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        uploadedImageUrl = null;
+                        updatePreview();
+                    }
+                });
+
+                sizeSelect.addEventListener('change', updatePreview);
+
+                // Initialize preview
+                updatePreview();
+            </script>
+        </body>
+        </html>
+        ```
