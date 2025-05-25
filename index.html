@@ -74,7 +74,7 @@
             <label for="adImage" class="block text-sm font-medium text-gray-700 mb-2">Upload Ad Image</label>
             <input type="file" id="adImage" accept="image/*"
                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#4285F4] file:text-white hover:file:bg-[#357ae8]" />
-        </div>
+            <p id="fileSizeNotification" class="text-xs mt-2 text-gray-600"></p> </div>
 
         <div>
             <label for="adSize" class="block text-sm font-medium text-gray-700 mb-2">Select Ad Size</label>
@@ -109,6 +109,7 @@
         const previewWrapper = document.getElementById('adPreviewWrapper');
         const imgElement = previewWrapper.querySelector('img');
         const placeholderElement = previewWrapper.querySelector('.placeholder-text');
+        const fileSizeNotification = document.getElementById('fileSizeNotification'); // Get the notification element
 
         let uploadedImageUrl = null;
 
@@ -150,9 +151,26 @@
                     updatePreview();
                 };
                 reader.readAsDataURL(file);
+
+                // Check file size and update notification
+                const maxSizeKB = 150;
+                const fileSizeKB = file.size / 1024; // Convert bytes to KB
+
+                fileSizeNotification.textContent = `Image size: ${fileSizeKB.toFixed(2)} KB.`;
+                fileSizeNotification.classList.remove('text-green-600', 'text-red-600'); // Clear previous colors
+
+                if (fileSizeKB <= maxSizeKB) {
+                    fileSizeNotification.textContent += ` (Within Google's ${maxSizeKB}KB limit)`;
+                    fileSizeNotification.classList.add('text-green-600'); // Green for good
+                } else {
+                    fileSizeNotification.textContent += ` (Exceeds Google's ${maxSizeKB}KB limit for animated and non-animated image ads!)`;
+                    fileSizeNotification.classList.add('text-red-600'); // Red for warning
+                }
+
             } else {
                 uploadedImageUrl = null;
                 updatePreview();
+                fileSizeNotification.textContent = ''; // Clear notification if no file selected
             }
         });
 
